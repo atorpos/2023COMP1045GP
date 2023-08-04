@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <LiquidCrystal.h>
 #include <LCDKeypad.h>
 #include <dht.h>
