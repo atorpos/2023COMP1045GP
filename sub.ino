@@ -1,5 +1,4 @@
 #include <WiFiNINA.h>
-#include <Arduino.h>
 // #include <dht.h>
 #include "arduino_secrets.h"
 #include <SPI.h>
@@ -11,10 +10,16 @@ char ssid[] = SECRET_SSID;
 char pass[] = SECRET_PASS;
 char* auToken = TWILIO_TOKEN;
 int msg_send = 0;
-
+char mystr[128];
 const char *data[] = {
         "From", "+16132094044",
         "Body","Your room temperature is 26 Degree Celsius, and Humidity is 49%",
+        "To","+14378484244"
+};
+
+char *data1[] ={
+        "From", "+16132094044",
+        "Body","",
         "To","+14378484244"
 };
 
@@ -26,6 +31,7 @@ WiFiClient client;
 void setup() {
     // put your setup code here, to run once:
     Serial.begin(9600);
+    Serial1.begin(9600);
     while (status != WL_CONNECTED) {
         Serial.print("Attempting to connect to network: ");
         Serial.println(ssid);
@@ -41,26 +47,12 @@ void setup() {
 }
 
 void loop() {
-    // put your main code here, to run repeatedly:
-    // int chk = DHT.read11(DHT11_PIN);
-    // Serial.print(DHT.humidity, 1);
-    // Serial.print(",\t");
-    // Serial.print(DHT.temperature, 1);
-    // switch (chk) {
-    //   case DHTLIB_OK:
-    //     Serial.print("OK,\t");
-    //     break;
-    //   case DHTLIB_ERROR_CHECKSUM:
-    //     Serial.print("Checksum error,\t");
-    //     break;
-    //   case DHTLIB_ERROR_TIMEOUT:
-    //     Serial.print("Time out error,\t");
-    //     break;
-    //   default:
-    //     Serial.print("Unknown error,\t");
-    //     break;
-    // }
-    // Serial.print(DHT.humidity, 1);
+    if(Serial1.available()){
+        Serial1.readBytes(mystr, 128);
+        Serial.print("Received data ");
+        Serial.println(mystr);
+        int bodyIndex = -1;
+    }
     delay(1000);
     printData();
     afterconnect();
